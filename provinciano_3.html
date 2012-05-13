@@ -1,0 +1,113 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Provinciano</title>
+<link rel="stylesheet" href="css/provinciano.css" />
+<script type="text/javascript" src="js/jquery-1.7.min.js"></script>
+<script type="text/javascript" src="js/jquery.tmpl.min.js"></script>
+<script type="text/javascript" src="js/provinciano.js"></script>
+<script type="text/javascript">
+    var provincias = [
+                        {'region' : 'Ninguna', 'name' : 'Ciudad Autónoma de Buenos Aires', 'capital' : 'C.A.B.A', 'inhabitants' : '2.890.151', 'area' : '200' },
+                        {'region' : 'Ninguna', 'name' : 'Buenos Aires', 'capital' : 'La Plata', 'inhabitants' : '15.625.084', 'area' : '307.571' },
+                        {'region' : 'Norte Grande Argentino', 'name' : 'Catamarca', 'capital' : 'San Fernando del Valle de Catamarca', 'inhabitants' : '367.828', 'area' : '99.633' },
+                        {'region' : 'Norte Grande Argentino', 'name' : 'Chaco', 'capital' : 'Resistencia', 'inhabitants' : '1.055.259', 'area' : '102.602' },
+                        {'region' : 'Patagónica', 'name' : 'Chubut', 'capital' : 'Rawson', 'inhabitants' : '509.108', 'area' : '224.686' },
+                        {'region' : 'Centro', 'name' : 'Córdoba', 'capital' : 'Córdoba', 'inhabitants' : '3.308.876', 'area' : '165.321' },
+                        {'region' : 'Norte Grande Argentino', 'name' : 'Corrientes', 'capital' : 'Corrientes', 'inhabitants' : '992.595', 'area' : '88.199' },
+                        {'region' : 'Centro', 'name' : 'Entre Ríos', 'capital' : 'Paraná', 'inhabitants' : '1.235.994', 'area' : '78.781' },
+                        {'region' : 'Norte Grande Argentino', 'name' : 'Formosa', 'capital' : 'Formosa', 'inhabitants' : '530.162', 'area' : '72.066' },
+                        {'region' : 'Norte Grande Argentino', 'name' : 'Jujuy', 'capital' : 'San Salvador de Jujuy', 'inhabitants' : '673.307', 'area' : '53.219' },
+                        {'region' : 'Patagónica', 'name' : 'La Pampa', 'capital' : 'Santa Rosa', 'inhabitants' : '318.951', 'area' : '143.440' },
+                        {'region' : 'Nuevo Cuyo', 'name' : 'La Rioja', 'capital' : 'Rioja', 'inhabitants' : '333.642', 'area' : '89.680' },
+                        {'region' : 'Nuevo Cuyo', 'name' : 'Mendoza', 'capital' : 'Mendoza', 'inhabitants' : '1.738.929', 'area' : '148.827' },
+                        {'region' : 'Norte Grande Argentino', 'name' : 'Misiones', 'capital' : 'Posadas', 'inhabitants' : '1.101.593', 'area' : '29.801' },
+                        {'region' : 'Patagónica', 'name' : 'Neuquén', 'capital' : 'Neuquén', 'inhabitants' : '551.266', 'area' : '94.078' },
+                        {'region' : 'Patagónica', 'name' : 'Río Negro', 'capital' : 'Viedma', 'inhabitants' : '638.645', 'area' : '203.013' },
+                        {'region' : 'Norte Grande Argentino', 'name' : 'Salta', 'capital' : 'Salta', 'inhabitants' : '1.214.441', 'area' : '155.488' },
+                        {'region' : 'Nuevo Cuyo', 'name' : 'San Juan', 'capital' : 'San Juan', 'inhabitants' : '681.055', 'area' : '89.651' },
+                        {'region' : 'Nuevo Cuyo', 'name' : 'San Luis', 'capital' : 'San Luis', 'inhabitants' : '432.310', 'area' : '76.748' },
+                        {'region' : 'Patagónica', 'name' : 'Santa Cruz', 'capital' : 'Río Gallegos', 'inhabitants' : '273.964', 'area' : '243.943' },
+                        {'region' : 'Centro', 'name' : 'Santa Fe', 'capital' : 'Santa Fe', 'inhabitants' : '3.194.537', 'area' : '133.007' },
+                        {'region' : 'Norte Grande Argentino', 'name' : 'Santiago del Estero', 'capital' : 'Santiago del Estero', 'inhabitants' : '874.006', 'area' : '136.351' },
+                        {'region' : 'Patagónica', 'name' : 'Tierra del Fuego, Antártida e Islas del Atlántico Sur', 'capital' : 'Ushuaia', 'inhabitants' : '127.205', 'area' : '21.5714' },
+                        {'region' : 'Norte Grande Argentino', 'name' : 'Tucumán', 'capital' : 'San Miguel de Tucumán', 'inhabitants' : '1.448.188', 'area' : '22.524' },
+                   ];
+
+    function search_data() {
+        $("#data").attr({"style":""});
+        var data_to_search = new RegExp(".*"+$("#input")[0].value+".*","i");
+        var region_to_search = $("#region").val();
+        var result = [];
+        $(provincias).each(function(){
+            if (data_to_search.exec(this.name) && (region_to_search == "Todas" || region_to_search == this.region)) {
+                result.push(this);
+            }
+        });
+        return result;
+    }
+
+    function load_regions() {
+        $("<option value='Todas'>Todas</option>").appendTo( "#region" );
+        var visited = [];
+        $(provincias).each(function(){
+            var region = this.region;
+            if (visited.indexOf(region) == -1) {
+                visited.push(region);
+            }
+        });
+        visited = visited.sort();
+        $(visited).each(function() {
+            $.tmpl( "<option value='${region}'>${region}</option>'", {"region":this}).appendTo( "#region" );
+        });
+    }
+
+    function load_data(data) {
+        $("tbody tr", "#data").each(function() { $(this).remove()});
+        $(data).each(function(){
+            $.tmpl( "<tr><td>${region}</td><td>${name}</td><td>${capital}</td><td>${inhabitants}</td><td>${area}</td></tr>", this).appendTo( "#data" );
+        });
+        if ($(data).size() == 0) {
+          $("<tr><td colspan='5'>No hay provincias que coincidan con lo buscado</td></tr>").appendTo( "#data" );
+	    }
+    }
+
+    $(document).ready(function() {
+        load_regions();
+        load_data(provincias);
+        $("#input").keyup(function(event){
+        });
+        $("#filters").submit(function() {
+            load_data(search_data());
+            return false;
+        });
+    });
+</script>
+</head>
+<body>
+
+<h1>Provinciano</h1>
+<p>Buscador de datos sobre Provincias de la República Argentina</p>
+<div id="filter-wrapper">
+    <form id="filters" action="">
+         <label for="region">Región</label>
+            <select id="region"></select>
+        <label for="input">Nombre</label>
+        <input id="input" class="input" type="text" />
+        <input type="submit" class="button"  value="buscar!"/>
+    </form>
+</div>
+<div id="data-wrapper">
+    <table id="data" style='display:none'>
+        <thead>
+					<tr>
+            <th>Región <a href='' name='region' order='asc' onclick="return sort_by($(this))">&uArr;</a></th><th>Nombre <a href='' name='name' order='asc' onclick="return sort_by($(this))">&uArr;</a></th><th>Capital <a href='' name='capital' order='asc' onclick="return sort_by($(this))">&uArr;</a></th><th>Habitantes <a href='' name='inhabitants' order='asc' onclick="return sort_by($(this),to_num)">&uArr;</a></th><th>Km<sup>2</sup><a href='' name='area' order='asc' onclick="return sort_by($(this),to_num)">&uArr;</a></th>
+					</tr>
+        </thead>
+        <tbody>
+				</tbody>
+    </table>
+</div>
+</body>
+</html>
