@@ -36,3 +36,10 @@ a {
   text-decoration: none;
 }
 
+table#releases th, table#releases td {
+    text-align: center;
+}
+
+table#releases td.desc {
+text-align: left;
+}
