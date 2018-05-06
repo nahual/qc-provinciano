@@ -31,11 +31,6 @@ input, select, .button {
   border:1px solid #2C2F56;
 }
 
-a {
-  color: #FFFFFF;
-  text-decoration: none;
-}
-
 table#releases th, table#releases td {
     text-align: center;
 }
