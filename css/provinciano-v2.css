@@ -1,0 +1,40 @@
+.container {
+	width: 1024px;
+	padding: 2em;
+}
+
+ 
+
+@media (min-width: 1025px){
+    th {
+        min-width: 120px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .filter-wrapper {
+        text-align: center;
+    } 
+    p {
+        text-align: center;
+        font-size: 35px;
+    }
+    h1 {
+        text-align: center;
+        font-size: 70px;
+    }
+    .control-label {
+        font-size: 35px;
+    }
+    table{
+        font-size: 30px;
+    }
+    td {
+        max-width: 205px; 
+    }
+    input, select, textarea, input[type="text"] {
+        min-height: 55px;
+        font-size:30px !important;
+    }
+    
+  }
